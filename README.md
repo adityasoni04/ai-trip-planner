@@ -326,13 +326,13 @@ We’d love to hear from you! Whether you have a question, suggestion, or issue 
 ### Ways to Contact Us:
 
 1. **GitHub Issues**: You can open an issue directly on this repository for bugs, feature requests, or general inquiries.
-   - [Open an Issue](https://github.com/satendra03/trip-planner-by-satendra/issues)
+   - [Open an Issue](https://github.com/adityasoni04/ai-trip-planner/issues)
 
 2. **Email**: Reach out to us via email at:
-   - **satendrakumarparteti.work@gmail.com** 
+   - **adityasoni2800@gmail.com@gmail.com** 
 
 3. **Social Media**:
-   - **Instagram**: [@_satendra_03](https://www.instagram.com/_satendra_03/)
-   - **LinkedIn**: [Satendra Kumar Parteti](https://www.linkedin.com/in/connect-satendra/)
+   - **Instagram**: [@ad1tyasoni](https://www.instagram.com/ad1tyasoni)
+   - **LinkedIn**: [Aditya Soni](https://www.linkedin.com/in/adityasoni28/)
 
 ---
