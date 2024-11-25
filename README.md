@@ -272,7 +272,7 @@ If you have an idea or feature that would make this project even better, please 
 2. **Clone the repo**  
    Clone your forked version of the repo to your local machine.  
    ```sh
-   git clone https://github.com/satendra03/trip-planner-by-satendra.git
+   git clone https://github.com/adityasoni04/ai-trip-planner.git
    ```
 
 3. **Create your feature branch**  
