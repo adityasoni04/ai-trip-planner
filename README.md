@@ -1,7 +1,7 @@
 <div align="center">
   <h1 align="center">Xplore.ai</h1 >
   <a href="https://xplore-ai.netlify.app/" target="_blank">
-    <img src="https://ibb.co/x53Jtdk/image.png" style="border-radius: 10px;" alt="Logo" width="" height="250">
+    <img src="https://ibb.co/x53Jtdk" style="border-radius: 10px;" alt="Logo" width="" height="250">
   </a>
 
   <h3>AI-Based Trip Planner</h3>
