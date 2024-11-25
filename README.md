@@ -1,6 +1,6 @@
 <div align="center">
-  <h1 align="center">JourneyJolt</h1 >
-  <a href="https://trip-planner-by-satendra.vercel.app/" target="_blank">
+  <h1 align="center">Xplore.ai</h1 >
+  <a href="https://xplore-ai.netlify.app/" target="_blank">
     <img src="https://i.ibb.co/YLK0qVx/image.png" style="border-radius: 10px;" alt="Logo" width="" height="250">
   </a>
 
@@ -10,12 +10,11 @@
     Discover personalized itineraries and curated hotel recommendations tailored to your interests. Simplify travel planning with smart suggestions for top destinations and activities, making every trip easy and enjoyable.
     <br />
     <br />
-    <a href="https://trip-planner-by-satendra.vercel.app/" target="_blank"><strong>Visit Now</strong></a>
+    <a href="https://xplore-ai.netlify.app/" target="_blank"><strong>Visit Now</strong></a>
     <br />
     <br />
-<!--     <a href="https://i.ibb.co/QkSk539/Whats-App-Image-2024-11-14-at-01-51-59-0db751b0.jpg">Support Me (with Money LOL)</a> -->
 <!--     • -->
-    <a href="https://github.com/satendra03/trip-planner-by-satendra/issues">Report Bug</a>
+    <a href="https://github.com/adityasoni04/ai-trip-planner/issues">Report Bug</a>
   </p>
 </div>
 </br>
@@ -36,13 +35,13 @@
 </div>
 </br>
 
-**JourneyJolt** is an AI-based travel planning application designed to make trip planning _easier and more efficient_. This project leverages artificial intelligence to analyze user preferences and provide personalized recommendations for destinations, accommodations, and activities.
+**Xplore.ai** is an AI-based travel planning application designed to make trip planning _easier and more efficient_. This project leverages artificial intelligence to analyze user preferences and provide personalized recommendations for destinations, accommodations, and activities.
 
-Key features of JourneyJolt include:
+Key features of Xplore.ai include:
 * **Personalized Recommendations**: The AI suggests ideal destinations, hotels, and activities tailored to the traveler’s preferences.
 * **Automated Itinerary Generation**: The app automatically creates a full itinerary that considers factors like travel time and user preferences.
 
-JourneyJolt aims to enhance the travel experience by providing a streamlined, easy-to-use platform for trip planning, designed for both casual travelers and frequent explorers alike.
+Xplore.ai aims to enhance the travel experience by providing a streamlined, easy-to-use platform for trip planning, designed for both casual travelers and frequent explorers alike.
 
 
 
@@ -65,9 +64,9 @@ This project is built with the following major frameworks, libraries, and servic
 
 ## Getting Started
 
-Setting up JourneyJolt is simple — just configure your ```.env``` file, and you're ready to go!
+Setting up Xplore.ai is simple — just configure your ```.env``` file, and you're ready to go!
 
-To get started with JourneyJolt, follow these instructions to set up the project locally on your machine for development and testing.
+To get started with Xplore.ai, follow these instructions to set up the project locally on your machine for development and testing.
 
 ### Prerequisites
 
@@ -77,7 +76,7 @@ Before you begin, ensure you have the following installed:
 
 ### Services & API Keys Setup
 
-To fully integrate JourneyJolt with third-party services, you'll need to sign up for the following services, configure the required settings, and obtain API keys. Below are the steps for each service:
+To fully integrate Xplore.ai with third-party services, you'll need to sign up for the following services, configure the required settings, and obtain API keys. Below are the steps for each service:
 
  
 <details>
@@ -185,7 +184,7 @@ The installation process is straightforward. You can either clone the repository
 1. **Clone the repository or download the ZIP file**  
    - To clone the repo, run the following command:
      ```sh
-     https://github.com/satendra03/trip-planner-by-satendra.git
+     https://github.com/adityasoni04/ai-trip-planner.git
      ```
    - Alternatively, you can download the ZIP file from the repository page and extract it.
 
