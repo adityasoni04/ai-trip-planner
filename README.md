@@ -321,7 +321,7 @@ We’d love to hear from you! Whether you have a question, suggestion, or issue 
    - [Open an Issue](https://github.com/adityasoni04/ai-trip-planner/issues)
 
 2. **Email**: Reach out to us via email at:
-   - **adityasoni2800@gmail.com@gmail.com** 
+   - **adityasoni2800@gmail.com** 
 
 3. **Social Media**:
    - **Instagram**: [@ad1tyasoni](https://www.instagram.com/ad1tyasoni)
