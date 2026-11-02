@@ -24,6 +24,7 @@ export default {
       },
       keyframes: {
         "fade-up": { from: { opacity: "0", transform: "translateY(14px)" }, to: { opacity: "1", transform: "translateY(0)" } },
+        roll: { from: { transform: "translateY(105%)", opacity: "0" }, to: { transform: "translateY(0)", opacity: "1" } },
         float: { "0%,100%": { transform: "translateY(0)" }, "50%": { transform: "translateY(-12px)" } },
         shimmer: { "100%": { transform: "translateX(100%)" } },
         ripple: { "0%": { transform: "scale(.4)", opacity: ".7" }, "100%": { transform: "scale(2.2)", opacity: "0" } },
@@ -45,6 +46,7 @@ export default {
       },
       animation: {
         "fade-up": "fade-up .6s ease-out both",
+        roll: "roll .7s cubic-bezier(.2,.8,.2,1) both",
         float: "float 6s ease-in-out infinite",
         shimmer: "shimmer 1.6s infinite",
         ripple: "ripple 1.8s ease-out infinite",

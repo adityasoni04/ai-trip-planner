@@ -17,6 +17,8 @@ const placesB = [
   "Lake Como", "Hokkaido", "Meghalaya", "Buenos Aires", "Fiji", "Venice", "Siem Reap", "Mykonos", "Andaman", "Budapest",
 ];
 
+const gets = ["Get the whole trip.", "Get your itinerary.", "Get hotel picks.", "Get a full budget.", "Get a packing list."];
+
 const popular = [
   { name: "Goa", sub: "India" },
   { name: "Paris", sub: "France" },
@@ -133,6 +135,11 @@ function HeroVisual() {
 export default function Home() {
   const navigate = useNavigate();
   const [q, setQ] = useState("");
+  const [g, setG] = useState(0);
+  useEffect(() => {
+    const t = setInterval(() => setG((n) => (n + 1) % gets.length), 2800);
+    return () => clearInterval(t);
+  }, []);
   const typedA = useTyping(placesA);
   const typedB = useTyping(placesB);
 
@@ -148,10 +155,13 @@ export default function Home() {
         <div className="grid items-center gap-14 lg:grid-cols-[1.2fr_1fr]">
           <div className="animate-fade-up">
             <h1 className="font-display text-5xl leading-[1] sm:text-7xl">
-              Plan a trip in <em className="gradient-text italic">one sentence.</em>
+              Pick a place.
+              <span className="-mb-[0.15em] block overflow-hidden pb-[0.15em]">
+                <em key={g} className="gradient-text block italic motion-safe:animate-roll">{gets[g]}</em>
+              </span>
             </h1>
             <p className="mt-7 max-w-lg text-lg leading-relaxed text-slate-400">
-              Say where you're going. Xplore returns a day-by-day itinerary, hotel options, a budget and a packing list.
+              Type a destination. Xplore returns a day-by-day itinerary, hotel options, a budget and a packing list.
             </p>
 
             <form onSubmit={go} className="mt-10 flex max-w-xl items-center gap-2 rounded-xl border border-slate-50/20 bg-[var(--surface)] p-2 transition focus-within:border-slate-50/60">
@@ -159,7 +169,7 @@ export default function Home() {
                 value={q}
                 onChange={(e) => setQ(e.target.value)}
                 placeholder={typedA || " "}
-                aria-label="Describe your trip"
+                aria-label="Destination"
                 className="min-w-0 flex-1 bg-transparent px-3 py-4 font-display text-2xl text-slate-50 sm:text-3xl outline-none placeholder:text-slate-400"
               />
               <Button type="submit">
@@ -210,7 +220,7 @@ export default function Home() {
             <h2 className="font-display text-5xl leading-[1.02] sm:text-6xl">
               What a plan <em className="gradient-text italic">includes</em>
             </h2>
-            <p className="mt-5 max-w-sm text-lg text-slate-400">Everything you need to go, generated from one sentence.</p>
+            <p className="mt-5 max-w-sm text-lg text-slate-400">Everything you need to go, generated from just a destination.</p>
           </div>
           <ul className="border-t border-slate-50/30">
             {includes.map(([t, d], i) => (
@@ -245,7 +255,7 @@ export default function Home() {
                 value={q}
                 onChange={(e) => setQ(e.target.value)}
                 placeholder={typedB || " "}
-                aria-label="Describe your trip"
+                aria-label="Destination"
                 className="min-w-0 flex-1 bg-transparent px-3 py-4 font-display text-2xl text-neutral-900 sm:text-3xl outline-none placeholder:text-neutral-500"
               />
               <button type="submit" className="inline-flex h-12 items-center gap-2 rounded-lg bg-neutral-900 px-5 text-sm font-semibold text-white transition hover:opacity-85 active:scale-[0.98]">
