@@ -77,11 +77,18 @@ export default function PlaceImage({ name, city, fallbackName, fallbackCity, emo
  * Destination photo that always shows something: Wikipedia article image -> Wikimedia Commons photos
  * -> country photo. `title` (optional) is the exact Wikipedia article title suggested by Gemini.
  */
-export function HeroImage({ name, country, title, className, children }) {
-  const [src, setSrc] = useState(null);
-  const [state, setState] = useState("loading");
+export function HeroImage({ name, country, title, url, onResolved, className, children }) {
+  const [src, setSrc] = useState(url || null);
+  const [state, setState] = useState(url ? "ready" : "loading");
+  const [stored, setStored] = useState(url || "");
 
+  // a URL saved with the trip shows instantly; otherwise (or if it breaks) resolve it from the web
   useEffect(() => {
+    if (stored) {
+      setSrc(stored);
+      setState("ready");
+      return undefined;
+    }
     let alive = true;
     setSrc(null);
     setState("loading");
@@ -89,16 +96,18 @@ export function HeroImage({ name, country, title, className, children }) {
       if (!alive) return;
       setSrc(u);
       setState(u ? "ready" : "none");
+      if (u) onResolved?.(u);
     });
     return () => {
       alive = false;
     };
-  }, [title, name, country]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [title, name, country, stored]);
 
   return (
     <div className={cn("relative overflow-hidden bg-gradient-to-br from-[#0f3d40] via-[#0f1628] to-[#2a1a4d]", className)}>
       {state === "ready" && src ? (
-        <img src={src} alt={name} className="absolute inset-0 h-full w-full animate-fade-up object-cover" onError={() => setState("none")} />
+        <img src={src} alt={name} className="absolute inset-0 h-full w-full animate-fade-up object-cover" onError={() => (stored ? setStored("") : setState("none"))} />
       ) : state === "loading" ? (
         <div className="shimmer absolute inset-0 flex items-center justify-center">
           <img src="/logo.png" alt="" className="h-12 w-12 animate-pulse opacity-50" />

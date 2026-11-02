@@ -15,13 +15,14 @@ import { db } from "./firebase";
 const COL = "Trips";
 const millis = (t) => t?.toMillis?.() ?? 0;
 
-export async function createTrip(user, selection, data) {
+export async function createTrip(user, selection, data, heroUrl = "") {
   const ref = await addDoc(collection(db, COL), {
     userId: user.uid,
     userName: user.displayName || "",
     userEmail: user.email || "",
     selection,
     data,
+    heroUrl,
     packed: {},
     isPublic: false,
     createdAt: serverTimestamp(),

@@ -119,24 +119,28 @@ const preload = (u) =>
     img.src = u;
   });
 
-const wide = (thumb) => thumb.replace(/\/\d+px-/, "/1400px-");
+// Wikimedia only serves standard thumbnail widths and refuses ones larger than the original
+const wide = (thumb, originalWidth = 0) => {
+  const w = [1280, 960, 500].find((x) => x <= originalWidth);
+  return w ? thumb.replace(/\/\d+px-/, `/${w}px-`) : thumb;
+};
 
 async function wikiSummary(title) {
-  const res = await schedule(() => fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(title.trim().replace(/ /g, "_"))}`));
+  const res = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(title.trim().replace(/ /g, "_"))}`);
   if (!res.ok) return null;
   const d = await res.json();
   if (d.type === "disambiguation") return null;
   const src = d.thumbnail?.source;
   const file = decodeURIComponent(src || "").split("/").slice(-2, -1)[0] || "";
   if (!src || BAD_FILE.test(file)) return null;
-  return wide(src);
+  return wide(src, d.originalimage?.width || 0);
 }
 
 async function commonsPhoto(query, mustHave) {
   const url =
     "https://commons.wikimedia.org/w/api.php?action=query&format=json&origin=*&generator=search&gsrnamespace=6" +
     `&gsrlimit=12&gsrsearch=${encodeURIComponent(query + " filetype:bitmap")}&prop=imageinfo&iiprop=url|size&iiurlwidth=1400`;
-  const res = await schedule(() => fetch(url));
+  const res = await fetch(url);
   if (!res.ok) return null;
   const pages = Object.values((await res.json())?.query?.pages || {}).sort((a, b) => a.index - b.index);
   const want = norm(mustHave).split(/\s+/).filter((t) => t.length > 2);
@@ -151,43 +155,60 @@ async function commonsPhoto(query, mustHave) {
   return hit?.imageinfo[0].thumburl || null;
 }
 
-/** Resolve a loadable photo URL for a destination, or null if every source fails. */
+const store = {
+  get: (k) => {
+    try {
+      return localStorage.getItem(k);
+    } catch {
+      return null;
+    }
+  },
+  set: (k, v) => {
+    try {
+      localStorage.setItem(k, v);
+    } catch {
+      /* storage unavailable */
+    }
+  },
+};
+
+/**
+ * Resolve a loadable photo URL for a destination (or null if every source fails).
+ * All sources are queried in PARALLEL and the best (highest-priority) one that loads wins,
+ * so the wait is the slowest useful source, not the sum of all of them. Results persist in localStorage.
+ */
 export function getHeroImage({ title, name, country }) {
   const key = `${title || ""}|${name}|${country || ""}`.toLowerCase();
   if (heroMem.has(key)) return heroMem.get(key);
-  try {
-    const cached = sessionStorage.getItem("hero1:" + key);
-    if (cached) {
-      heroMem.set(key, Promise.resolve(cached));
-      return heroMem.get(key);
-    }
-  } catch {
-    /* storage unavailable */
+  const cached = store.get("hero2:" + key);
+  if (cached) {
+    heroMem.set(key, Promise.resolve(cached));
+    return heroMem.get(key);
   }
   const steps = [
     title && (() => wikiSummary(title)),
-    () => wikiSummary(name),
+    !title || norm(title) !== norm(name) ? () => wikiSummary(name) : null,
     country && (() => wikiSummary(`${name}, ${country}`)),
-    () => getImage(name, country || ""),
+    () => wikipedia(name, country || "", `${name} ${country || ""}`.trim()),
     () => commonsPhoto(`${name} ${country || ""}`, name),
-    () => commonsPhoto(`${name} skyline`, name),
     country && (() => commonsPhoto(`${country} landscape`, country)),
   ].filter(Boolean);
 
+  const attempts = steps.map(async (step) => {
+    try {
+      const u = await step();
+      return u && (await preload(u)) ? u : null;
+    } catch {
+      return null;
+    }
+  });
+
   const p = (async () => {
-    for (const step of steps) {
-      try {
-        const u = await step();
-        if (u && (await preload(u))) {
-          try {
-            sessionStorage.setItem("hero1:" + key, u);
-          } catch {
-            /* ignore */
-          }
-          return u;
-        }
-      } catch {
-        /* try the next source */
+    for (const attempt of attempts) {
+      const u = await attempt; // all already running; we just honour priority order
+      if (u) {
+        store.set("hero2:" + key, u);
+        return u;
       }
     }
     heroMem.delete(key); // nothing worked (offline / rate-limited): allow a retry later

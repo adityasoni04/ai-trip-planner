@@ -6,6 +6,7 @@ import { Button } from "@/components/ui";
 import { RouteLoader, WaveDots } from "@/components/Loaders";
 import { useAuth } from "@/context/AuthContext";
 import { generateTrip, geminiConfigured } from "@/lib/gemini";
+import { getHeroImage } from "@/lib/images";
 import { searchPlaces } from "@/lib/geocode";
 import { createTrip } from "@/lib/trips";
 import { cn, shortPlace } from "@/lib/utils";
@@ -269,8 +270,17 @@ export default function CreateTrip() {
     };
     setBusy(true);
     try {
+      // fetch the destination photo in parallel with Gemini so it is ready when the trip opens
+      const name = shortPlace(selection.location);
+      const country = selection.location.split(",").slice(-1)[0].trim();
+      const early = getHeroImage({ name, country });
       const data = await generateTrip(selection);
-      const id = await createTrip(user, selection, data);
+      const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+      const hero =
+        (await Promise.race([getHeroImage({ title: data.heroImageQuery, name, country }), wait(6000).then(() => null)])) ||
+        (await Promise.race([early, wait(1)])) ||
+        "";
+      const id = await createTrip(user, selection, data, hero);
       toast.success("Your trip is ready!");
       navigate(`/trip/${id}`);
     } catch (err) {

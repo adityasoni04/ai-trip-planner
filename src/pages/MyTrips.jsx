@@ -83,7 +83,7 @@ export default function MyTrips() {
           ))}
         {shown.map((t) => (
           <Link key={t.id} to={`/trip/${t.id}`} className="card group overflow-hidden transition hover:-translate-y-1 hover:border-teal-300/40 hover:shadow-[0_0_34px_-8px_rgba(55,193,195,0.55)]">
-            <HeroImage name={shortPlace(t.selection?.location)} country={t.selection?.location?.split(",").slice(-1)[0]?.trim()} title={t.data?.heroImageQuery} className="h-44">
+            <HeroImage name={shortPlace(t.selection?.location)} country={t.selection?.location?.split(",").slice(-1)[0]?.trim()} title={t.data?.heroImageQuery} url={t.heroUrl} className="h-44">
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent" />
               <button
                 onClick={(e) => remove(e, t)}

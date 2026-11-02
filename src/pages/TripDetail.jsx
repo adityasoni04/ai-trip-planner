@@ -167,7 +167,7 @@ export default function TripDetail() {
 
   return (
     <div>
-      <HeroImage name={city} country={country} title={data.heroImageQuery} className="h-64 sm:h-80">
+      <HeroImage name={city} country={country} title={data.heroImageQuery} url={trip.heroUrl} onResolved={(u) => owner && !trip.heroUrl && updateTrip(trip.id, { heroUrl: u }).catch(() => {})} className="h-64 sm:h-80">
         <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
         <div className="absolute inset-x-0 bottom-0 mx-auto max-w-5xl px-4 pb-6 text-white">
           <h1 className="font-display text-3xl font-extrabold sm:text-5xl">{data.destination || city}</h1>
