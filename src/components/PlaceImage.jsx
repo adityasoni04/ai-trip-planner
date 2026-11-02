@@ -19,6 +19,7 @@ export default function PlaceImage({ name, city, fallbackName, fallbackCity, emo
   const [src, setSrc] = useState(null);
   const [area, setArea] = useState(false); // true when showing the fallback (area) photo
   const [state, setState] = useState("loading"); // loading | ready | none
+  const [skipDirect, setSkipDirect] = useState(false); // exact photo failed to load: go straight to the area photo
 
   useEffect(() => {
     let alive = true;
@@ -26,10 +27,15 @@ export default function PlaceImage({ name, city, fallbackName, fallbackCity, emo
     setArea(false);
     setState("loading");
     (async () => {
-      let u = await getImage(name, city);
+      let u = skipDirect ? null : await getImage(name, city);
       let isArea = false;
       if (!u && fallbackName) {
         u = await getImage(fallbackName, fallbackCity);
+        isArea = Boolean(u);
+      }
+      // last resort: the destination photo resolver (several sources, only returns a URL that loads)
+      if (!u && fallbackName) {
+        u = await getHeroImage({ name: fallbackName, country: fallbackCity });
         isArea = Boolean(u);
       }
       if (!alive) return;
@@ -40,7 +46,7 @@ export default function PlaceImage({ name, city, fallbackName, fallbackCity, emo
     return () => {
       alive = false;
     };
-  }, [name, city, fallbackName, fallbackCity]);
+  }, [name, city, fallbackName, fallbackCity, skipDirect]);
 
   const g = fallbacks[(name?.length || 0) % fallbacks.length];
   return (
@@ -51,7 +57,7 @@ export default function PlaceImage({ name, city, fallbackName, fallbackCity, emo
             src={src}
             alt={name}
             loading="lazy"
-            onError={() => setState("none")}
+            onError={() => (!area && fallbackName && !skipDirect ? setSkipDirect(true) : setState("none"))}
             className="absolute inset-0 h-full w-full object-cover transition duration-700 hover:scale-105"
           />
           {area && (

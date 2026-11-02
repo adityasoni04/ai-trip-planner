@@ -5,8 +5,17 @@ import { Button } from "@/components/ui";
 import { HeroImage } from "@/components/PlaceImage";
 import { cn } from "@/lib/utils";
 
-const placesA = ["Kyoto", "Goa", "Paris", "Bali", "Manali", "Dubai"];
-const placesB = ["Lisbon", "Santorini", "Udaipur", "Cape Town", "Istanbul", "Rome"];
+// Two disjoint lists so the hero and bottom inputs never show the same name at the same time.
+const placesA = [
+  "Kyoto", "Goa", "Paris", "Bali", "Manali", "Dubai", "Santorini", "Marrakech", "Reykjavik", "Ladakh",
+  "Amalfi Coast", "Machu Picchu", "Queenstown", "Hampi", "Maldives", "Banff", "Cappadocia", "Hanoi",
+  "Seoul", "Prague", "Rishikesh", "Havana", "Petra", "Zanzibar", "Lisbon", "Kerala", "Patagonia", "Vienna",
+];
+const placesB = [
+  "Udaipur", "Cape Town", "Istanbul", "Rome", "Singapore", "Bangkok", "Tuscany", "Edinburgh", "Jaipur",
+  "Sydney", "New York", "Barcelona", "Phuket", "Nara", "Darjeeling", "Amsterdam", "Cairo", "Bhutan",
+  "Lake Como", "Hokkaido", "Meghalaya", "Buenos Aires", "Fiji", "Venice", "Siem Reap", "Mykonos", "Andaman", "Budapest",
+];
 
 const popular = [
   { name: "Goa", sub: "India" },
@@ -36,12 +45,20 @@ const PASSES = [
 function useTyping(list) {
   const [text, setText] = useState("");
   useEffect(() => {
-    let i = 0;
     let c = 0;
     let del = false;
     let t;
+    let deck = [];
+    // shuffled deck: every name shows once before any repeats, and never twice in a row
+    const next = (prev) => {
+      if (!deck.length) {
+        deck = [...list].sort(() => Math.random() - 0.5);
+        if (deck[deck.length - 1] === prev) deck.unshift(deck.pop());
+      }
+      return deck.pop();
+    };
+    let full = next();
     const tick = () => {
-      const full = list[i];
       c += del ? -1 : 1;
       setText(full.slice(0, c));
       let wait = del ? 28 : 55;
@@ -50,7 +67,7 @@ function useTyping(list) {
         wait = 1400;
       } else if (del && c === 0) {
         del = false;
-        i = (i + 1) % list.length;
+        full = next(full);
         wait = 400;
       }
       t = setTimeout(tick, wait);
