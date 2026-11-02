@@ -80,6 +80,27 @@ function useTyping(list) {
   return text;
 }
 
+/** Cycles through phrases: fade out, swap, fade in. */
+function useHeadline(list) {
+  const [i, setI] = useState(0);
+  const [fading, setFading] = useState(false);
+  useEffect(() => {
+    let t;
+    const id = setInterval(() => {
+      setFading(true);
+      t = setTimeout(() => {
+        setI((n) => (n + 1) % list.length);
+        setFading(false);
+      }, 500);
+    }, 3000);
+    return () => {
+      clearInterval(id);
+      clearTimeout(t);
+    };
+  }, [list]);
+  return { text: list[i], fading };
+}
+
 /** Arched destination photo with a boarding-pass summary overlapping it; cycles through sample plans. */
 function HeroVisual() {
   const [i, setI] = useState(0);
@@ -135,11 +156,7 @@ function HeroVisual() {
 export default function Home() {
   const navigate = useNavigate();
   const [q, setQ] = useState("");
-  const [g, setG] = useState(0);
-  useEffect(() => {
-    const t = setInterval(() => setG((n) => (n + 1) % gets.length), 2800);
-    return () => clearInterval(t);
-  }, []);
+  const headline = useHeadline(gets);
   const typedA = useTyping(placesA);
   const typedB = useTyping(placesB);
 
@@ -153,12 +170,12 @@ export default function Home() {
       {/* HERO */}
       <section className="mx-auto max-w-6xl px-4 pb-20 pt-14 sm:pt-24">
         <div className="grid items-center gap-14 lg:grid-cols-[1.2fr_1fr]">
-          <div className="animate-fade-up">
-            <h1 className="font-display text-5xl leading-[1] sm:text-7xl">
-              Pick a place.
-              <span className="-mb-[0.15em] block overflow-hidden pb-[0.15em]">
-                <em key={g} className="gradient-text block italic motion-safe:animate-roll">{gets[g]}</em>
-              </span>
+          <div className="min-w-0 animate-fade-up">
+            <h1 className="font-display whitespace-nowrap text-[clamp(2.25rem,11vw,4.5rem)] leading-[1.05]">
+              Pick a place,
+              <em className={cn("gradient-text block italic transition-opacity duration-500", headline.fading && "opacity-0")}>
+                {headline.text}
+              </em>
             </h1>
             <p className="mt-7 max-w-lg text-lg leading-relaxed text-slate-400">
               Type a destination. Xplore returns a day-by-day itinerary, hotel options, a budget and a packing list.
