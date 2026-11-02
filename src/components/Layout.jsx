@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { LogOut, Map, Menu, Moon, Sparkles, Sun, X } from "lucide-react";
+import { LogOut, Map, Menu, Moon, Sun, X } from "lucide-react";
 import { Button } from "./ui";
 import { useAuth } from "@/context/AuthContext";
 import { cn } from "@/lib/utils";
@@ -43,7 +43,7 @@ function UserMenu() {
         )}
       </button>
       {open && (
-        <div className="card absolute right-0 mt-3 w-60 animate-fade-up overflow-hidden !bg-slate-900/95 p-1.5">
+        <div className="card absolute right-0 mt-3 w-60 animate-fade-up overflow-hidden p-1.5">
           <div className="border-b border-slate-50/10 px-3 py-2">
             <p className="truncate text-sm font-semibold text-slate-50">{user.displayName || "Traveller"}</p>
             <p className="truncate text-xs text-slate-400">{user.email}</p>
@@ -77,20 +77,20 @@ export function Navbar() {
   const { user, loading, openAuth } = useAuth();
   const [mobile, setMobile] = useState(false);
   const link = ({ isActive }) =>
-    cn("rounded-full px-4 py-2 text-sm font-medium transition", isActive ? "bg-slate-50/10 text-slate-50" : "text-slate-400 hover:text-slate-50");
+    cn("border-b-2 px-1 py-1 text-sm font-medium transition", isActive ? "border-slate-50 text-slate-50" : "border-transparent text-slate-400 hover:text-slate-50");
 
   return (
-    <header className="sticky top-0 z-50 px-3 pt-3 print:hidden">
-      <div className="mx-auto max-w-6xl rounded-2xl border border-slate-50/10 bg-slate-950/70 shadow-[0_8px_40px_-12px_rgba(0,0,0,0.8)] backdrop-blur-xl">
-        <div className="flex h-14 items-center justify-between pl-4 pr-3">
+    <header className="sticky top-0 z-50 border-b border-slate-50/10 bg-slate-950/85 backdrop-blur-md print:hidden">
+      <div className="mx-auto max-w-6xl">
+        <div className="flex h-16 items-center justify-between px-4">
           <Link to="/" className="flex items-center gap-2.5" onClick={() => setMobile(false)}>
-            <img src="/logo.png" alt="Xplore.ai" className="h-8 w-8 drop-shadow-[0_0_12px_rgba(55,193,195,0.6)]" />
-            <span className="font-display text-lg font-bold tracking-tight text-slate-50">
+            <img src="/logo.png" alt="Xplore.ai" className="h-8 w-8" />
+            <span className="font-display text-xl text-slate-50">
               Xplore<span className="gradient-text">.ai</span>
             </span>
           </Link>
 
-          <nav className="hidden items-center gap-1 md:flex">
+          <nav className="hidden items-center gap-7 md:flex">
             <NavLink to="/" end className={link}>Home</NavLink>
             <NavLink to="/plan-a-trip" className={link}>Plan a trip</NavLink>
             {user && <NavLink to="/my-trips" className={link}>My trips</NavLink>}
@@ -98,14 +98,14 @@ export function Navbar() {
 
           <div className="flex items-center gap-2">
             <ThemeToggle />
-            {!loading && (user ? <UserMenu /> : <Button size="sm" onClick={openAuth}><Sparkles className="h-4 w-4" /> Sign in</Button>)}
+            {!loading && (user ? <UserMenu /> : <Button size="sm" onClick={openAuth}>Sign in</Button>)}
             <button className="rounded-xl p-2 text-slate-300 md:hidden" aria-label="Menu" onClick={() => setMobile(!mobile)}>
               {mobile ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>
           </div>
         </div>
         {mobile && (
-          <nav className="flex flex-col gap-1 border-t border-slate-50/10 p-3 md:hidden" onClick={() => setMobile(false)}>
+          <nav className="flex flex-col gap-3 border-t border-slate-50/10 px-4 py-4 md:hidden" onClick={() => setMobile(false)}>
             <NavLink to="/" end className={link}>Home</NavLink>
             <NavLink to="/plan-a-trip" className={link}>Plan a trip</NavLink>
             {user && <NavLink to="/my-trips" className={link}>My trips</NavLink>}

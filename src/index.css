@@ -13,15 +13,15 @@
    The "slate" scale is inverted between themes, so `text-slate-400` is always "muted",
    `bg-slate-900/60` is always "card", `bg-slate-950` is always "page". */
 :root {
-  --s-50: 10 16 32;   --s-100: 18 26 46;  --s-200: 36 48 73;  --s-300: 59 71 94;
-  --s-400: 85 99 125; --s-500: 107 122 148; --s-600: 154 168 192; --s-700: 203 213 229;
-  --s-800: 228 234 244; --s-900: 255 255 255; --s-950: 245 248 252;
+  --s-50: 26 24 20;   --s-100: 38 35 30;  --s-200: 58 54 47;  --s-300: 82 77 68;
+  --s-400: 108 102 92; --s-500: 132 125 114; --s-600: 168 160 148; --s-700: 214 207 195;
+  --s-800: 233 227 216; --s-900: 255 253 249; --s-950: 246 242 234;
   --t-50: 4 47 46;    --t-100: 19 78 74;  --t-200: 17 94 89;  --t-300: 15 118 110;
   --t-400: 13 148 136; --t-500: 20 184 166; --t-600: 45 212 191; --t-700: 94 234 212;
   --t-800: 153 246 228; --t-900: 204 251 241; --t-950: 240 253 250;
   --amber-300: 180 83 9; --amber-400: 217 119 6;
-  --surface: #ffffff;
-  --page: #f5f8fc;
+  --surface: #fffdf9;
+  --page: #f6f2ea;
   --grid: rgba(15, 23, 42, 0.05);
   --glow-a: rgba(55, 193, 195, 0.16);
   --glow-b: rgba(139, 92, 246, 0.1);
@@ -31,15 +31,15 @@
   --gt3: #7c3aed;
 }
 .dark {
-  --s-50: 244 247 252; --s-100: 232 238 248; --s-200: 207 217 234; --s-300: 169 184 209;
-  --s-400: 126 143 174; --s-500: 93 110 142;  --s-600: 70 85 111;   --s-700: 51 63 88;
-  --s-800: 27 35 56;   --s-900: 15 22 40;    --s-950: 6 10 22;
+  --s-50: 245 241 232; --s-100: 234 229 218; --s-200: 214 208 195; --s-300: 180 173 158;
+  --s-400: 150 143 128; --s-500: 118 112 99;  --s-600: 88 83 73;    --s-700: 62 58 51;
+  --s-800: 38 36 31;   --s-900: 24 23 20;    --s-950: 14 13 11;
   --t-50: 240 253 250; --t-100: 204 251 241; --t-200: 153 246 228; --t-300: 94 234 212;
   --t-400: 45 212 191; --t-500: 20 184 166;  --t-600: 13 148 136;  --t-700: 15 118 110;
   --t-800: 17 94 89;   --t-900: 19 78 74;    --t-950: 4 47 46;
   --amber-300: 252 211 77; --amber-400: 251 191 36;
-  --surface: #0b1120;
-  --page: #060a16;
+  --surface: #191815;
+  --page: #0e0d0b;
   --grid: rgba(255, 255, 255, 0.04);
   --glow-a: rgba(55, 193, 195, 0.18);
   --glow-b: rgba(139, 92, 246, 0.17);
@@ -60,32 +60,18 @@
   body {
     @apply font-sans text-slate-200 antialiased;
     background-color: var(--page);
-    background-image:
-      radial-gradient(60rem 38rem at 8% -8%, var(--glow-a), transparent 60%),
-      radial-gradient(50rem 36rem at 98% 2%, var(--glow-b), transparent 60%),
-      radial-gradient(44rem 30rem at 50% 115%, var(--glow-c), transparent 60%);
-    background-attachment: fixed;
     transition: background-color 0.3s;
-  }
-  /* faint engineering grid */
-  body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    z-index: -1;
-    pointer-events: none;
-    background-image:
-      linear-gradient(var(--grid) 1px, transparent 1px),
-      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
-    background-size: 56px 56px;
-    -webkit-mask-image: radial-gradient(ellipse at 50% 0%, #000 15%, transparent 72%);
-    mask-image: radial-gradient(ellipse at 50% 0%, #000 15%, transparent 72%);
   }
   ::selection {
     background: rgba(55, 193, 195, 0.35);
   }
   h1, h2, h3 {
     @apply text-slate-50;
+  }
+  .font-display {
+    font-weight: 560 !important;
+    letter-spacing: -0.02em;
+    font-optical-sizing: auto;
   }
   ::-webkit-scrollbar {
     width: 10px;
@@ -98,36 +84,22 @@
 
 @layer components {
   .card {
-    @apply rounded-2xl border border-slate-50/10 bg-slate-900/60 shadow-[0_10px_40px_-14px_rgba(15,23,42,0.35)] backdrop-blur-xl;
-  }
-  .dark .card {
-    box-shadow: 0 10px 40px -14px rgba(0, 0, 0, 0.7);
+    @apply rounded-xl border border-slate-50/10 bg-slate-900;
   }
   .input {
     @apply w-full rounded-xl border border-slate-50/15 bg-slate-950/60 px-4 py-3 text-sm text-slate-100 outline-none transition placeholder:text-slate-500 focus:border-violet-500/70 focus:ring-4 focus:ring-violet-500/15;
   }
   .gradient-text {
-    background-image: linear-gradient(100deg, var(--gt1), var(--gt2) 40%, var(--gt3) 70%, var(--gt1));
-    background-size: 200% auto;
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    animation: pan 7s linear infinite;
+    color: rgb(var(--t-300));
   }
   .gradient-bg {
-    background-image: linear-gradient(115deg, #0fb5ba, #2f80ed 52%, #8b5cf6);
+    background-color: #0d9488;
     color: #fff;
   }
-  /* rotating conic border for hero surfaces */
   .glow-border {
-    position: relative;
-    border-radius: 1.5rem;
-    background:
-      linear-gradient(var(--surface), var(--surface)) padding-box,
-      conic-gradient(from var(--a), #37c1c3, #3b99db, #8b5cf6, #f24349, #f5b027, #34d073, #37c1c3) border-box;
-    border: 1.5px solid transparent;
-    animation: spin-a 6s linear infinite;
-    box-shadow: 0 0 60px -14px rgba(55, 193, 195, 0.4), 0 0 90px -24px rgba(139, 92, 246, 0.35);
+    border-radius: 0.75rem;
+    border: 1px solid rgb(var(--s-50) / 0.14);
+    background: var(--surface);
   }
   .tag {
     @apply inline-flex items-center gap-1.5 rounded-full border border-slate-50/10 bg-slate-50/5 px-3 py-1 text-xs font-medium text-slate-300;

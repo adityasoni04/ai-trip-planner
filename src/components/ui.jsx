@@ -4,8 +4,7 @@ import { cn } from "@/lib/utils";
 import { PinLoader, SegSpinner } from "./Loaders";
 
 const variants = {
-  primary:
-    "gradient-bg shadow-[0_0_30px_-6px_rgba(55,193,195,0.65)] hover:shadow-[0_0_40px_-4px_rgba(139,92,246,0.7)] hover:brightness-110 active:scale-[0.98]",
+  primary: "bg-slate-50 text-slate-950 hover:opacity-85 active:scale-[0.98]",
   outline: "border border-slate-50/15 bg-slate-50/5 text-slate-100 backdrop-blur hover:border-teal-300/50 hover:bg-slate-50/10",
   ghost: "text-slate-300 hover:bg-slate-50/10 hover:text-slate-50",
   danger: "bg-brand-coral text-white hover:brightness-110",
@@ -17,7 +16,7 @@ export function Button({ variant = "primary", size = "md", loading, className, c
     <button
       disabled={disabled || loading}
       className={cn(
-        "inline-flex items-center justify-center gap-2 rounded-xl font-semibold transition duration-200 disabled:pointer-events-none disabled:opacity-60",
+        "inline-flex items-center justify-center gap-2 rounded-lg font-semibold transition duration-200 disabled:pointer-events-none disabled:opacity-60",
         variants[variant],
         sizes[size],
         className
