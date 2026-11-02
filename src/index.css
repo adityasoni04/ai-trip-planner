@@ -2,68 +2,223 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 3.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 3.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 3.9%;
-    --primary: 0 0% 9%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 0 0% 96.1%;
-    --secondary-foreground: 0 0% 9%;
-    --muted: 0 0% 96.1%;
-    --muted-foreground: 0 0% 45.1%;
-    --accent: 0 0% 96.1%;
-    --accent-foreground: 0 0% 9%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 89.8%;
-    --input: 0 0% 89.8%;
-    --ring: 0 0% 3.9%;
-    --radius: 0.5rem;
-    --chart-1: 12 76% 61%;
-    --chart-2: 173 58% 39%;
-    --chart-3: 197 37% 24%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
-  }
+@property --a {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
 
-  .dark {
-    --background: 0 0% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 0 0% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 0 0% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 0 0% 9%;
-    --secondary: 0 0% 14.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 14.9%;
-    --muted-foreground: 0 0% 63.9%;
-    --accent: 0 0% 14.9%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 14.9%;
-    --input: 0 0% 14.9%;
-    --ring: 0 0% 83.1%;
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
-  }
+/* ---------- theme tokens (RGB triples) ----------
+   Light is the default; `.dark` on <html> switches to the midnight-ink palette.
+   The "slate" scale is inverted between themes, so `text-slate-400` is always "muted",
+   `bg-slate-900/60` is always "card", `bg-slate-950` is always "page". */
+:root {
+  --s-50: 10 16 32;   --s-100: 18 26 46;  --s-200: 36 48 73;  --s-300: 59 71 94;
+  --s-400: 85 99 125; --s-500: 107 122 148; --s-600: 154 168 192; --s-700: 203 213 229;
+  --s-800: 228 234 244; --s-900: 255 255 255; --s-950: 245 248 252;
+  --t-50: 4 47 46;    --t-100: 19 78 74;  --t-200: 17 94 89;  --t-300: 15 118 110;
+  --t-400: 13 148 136; --t-500: 20 184 166; --t-600: 45 212 191; --t-700: 94 234 212;
+  --t-800: 153 246 228; --t-900: 204 251 241; --t-950: 240 253 250;
+  --amber-300: 180 83 9; --amber-400: 217 119 6;
+  --surface: #ffffff;
+  --page: #f5f8fc;
+  --grid: rgba(15, 23, 42, 0.05);
+  --glow-a: rgba(55, 193, 195, 0.16);
+  --glow-b: rgba(139, 92, 246, 0.1);
+  --glow-c: rgba(59, 153, 219, 0.1);
+  --gt1: #0d9488;
+  --gt2: #2563eb;
+  --gt3: #7c3aed;
+}
+.dark {
+  --s-50: 244 247 252; --s-100: 232 238 248; --s-200: 207 217 234; --s-300: 169 184 209;
+  --s-400: 126 143 174; --s-500: 93 110 142;  --s-600: 70 85 111;   --s-700: 51 63 88;
+  --s-800: 27 35 56;   --s-900: 15 22 40;    --s-950: 6 10 22;
+  --t-50: 240 253 250; --t-100: 204 251 241; --t-200: 153 246 228; --t-300: 94 234 212;
+  --t-400: 45 212 191; --t-500: 20 184 166;  --t-600: 13 148 136;  --t-700: 15 118 110;
+  --t-800: 17 94 89;   --t-900: 19 78 74;    --t-950: 4 47 46;
+  --amber-300: 252 211 77; --amber-400: 251 191 36;
+  --surface: #0b1120;
+  --page: #060a16;
+  --grid: rgba(255, 255, 255, 0.04);
+  --glow-a: rgba(55, 193, 195, 0.18);
+  --glow-b: rgba(139, 92, 246, 0.17);
+  --glow-c: rgba(59, 153, 219, 0.15);
+  --gt1: #5eead4;
+  --gt2: #60a5fa;
+  --gt3: #c4b5fd;
 }
 
 @layer base {
-  * {
-    @apply border-border;
+  html {
+    color-scheme: light;
+    scroll-behavior: smooth;
+  }
+  html.dark {
+    color-scheme: dark;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply font-sans text-slate-200 antialiased;
+    background-color: var(--page);
+    background-image:
+      radial-gradient(60rem 38rem at 8% -8%, var(--glow-a), transparent 60%),
+      radial-gradient(50rem 36rem at 98% 2%, var(--glow-b), transparent 60%),
+      radial-gradient(44rem 30rem at 50% 115%, var(--glow-c), transparent 60%);
+    background-attachment: fixed;
+    transition: background-color 0.3s;
+  }
+  /* faint engineering grid */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 56px 56px;
+    -webkit-mask-image: radial-gradient(ellipse at 50% 0%, #000 15%, transparent 72%);
+    mask-image: radial-gradient(ellipse at 50% 0%, #000 15%, transparent 72%);
+  }
+  ::selection {
+    background: rgba(55, 193, 195, 0.35);
+  }
+  h1, h2, h3 {
+    @apply text-slate-50;
+  }
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply rounded-full bg-slate-700;
+  }
+}
+
+@layer components {
+  .card {
+    @apply rounded-2xl border border-slate-50/10 bg-slate-900/60 shadow-[0_10px_40px_-14px_rgba(15,23,42,0.35)] backdrop-blur-xl;
+  }
+  .dark .card {
+    box-shadow: 0 10px 40px -14px rgba(0, 0, 0, 0.7);
+  }
+  .input {
+    @apply w-full rounded-xl border border-slate-50/15 bg-slate-950/60 px-4 py-3 text-sm text-slate-100 outline-none transition placeholder:text-slate-500 focus:border-violet-500/70 focus:ring-4 focus:ring-violet-500/15;
+  }
+  .gradient-text {
+    background-image: linear-gradient(100deg, var(--gt1), var(--gt2) 40%, var(--gt3) 70%, var(--gt1));
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: pan 7s linear infinite;
+  }
+  .gradient-bg {
+    background-image: linear-gradient(115deg, #0fb5ba, #2f80ed 52%, #8b5cf6);
+    color: #fff;
+  }
+  /* rotating conic border for hero surfaces */
+  .glow-border {
+    position: relative;
+    border-radius: 1.5rem;
+    background:
+      linear-gradient(var(--surface), var(--surface)) padding-box,
+      conic-gradient(from var(--a), #37c1c3, #3b99db, #8b5cf6, #f24349, #f5b027, #34d073, #37c1c3) border-box;
+    border: 1.5px solid transparent;
+    animation: spin-a 6s linear infinite;
+    box-shadow: 0 0 60px -14px rgba(55, 193, 195, 0.4), 0 0 90px -24px rgba(139, 92, 246, 0.35);
+  }
+  .tag {
+    @apply inline-flex items-center gap-1.5 rounded-full border border-slate-50/10 bg-slate-50/5 px-3 py-1 text-xs font-medium text-slate-300;
+  }
+}
+
+@keyframes spin-a {
+  to {
+    --a: 360deg;
+  }
+}
+
+/* ---------- unique loaders ---------- */
+.shimmer {
+  position: relative;
+  overflow: hidden;
+  background: rgb(var(--s-50) / 0.06);
+}
+.shimmer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(100deg, transparent 20%, rgba(55, 193, 195, 0.2) 50%, transparent 80%);
+  animation: shimmer 1.6s infinite;
+}
+.seg-spinner {
+  display: inline-block;
+  width: 1.1em;
+  height: 1.1em;
+  border-radius: 50%;
+  background: conic-gradient(#37c1c3 0 25%, #3b99db 0 50%, #34d073 0 75%, #f5b027 0);
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 2px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 2px));
+  animation: sweep 0.9s linear infinite;
+}
+.route-runner {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 26px;
+  height: 26px;
+  margin: -13px 0 0 -13px;
+  offset-path: path("M14 118 C 70 10, 120 170, 180 80 S 270 20, 306 60");
+  offset-rotate: 0deg;
+  animation: run 3.6s ease-in-out infinite;
+  filter: drop-shadow(0 0 8px rgba(55, 193, 195, 0.9));
+}
+
+/* Leaflet */
+.map-pin {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 9999px;
+  border: 2px solid #fff;
+  color: #06101c;
+  font-size: 12px;
+  font-weight: 800;
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.12), 0 4px 14px rgba(0, 0, 0, 0.5);
+}
+.leaflet-container {
+  font-family: inherit;
+  background: var(--surface);
+  z-index: 0;
+}
+/* keyless OSM tiles, inverted into a dark map when the dark theme is on */
+.dark .leaflet-tile-pane {
+  filter: invert(1) hue-rotate(180deg) brightness(0.92) contrast(0.9) saturate(0.8);
+}
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+  background: var(--surface);
+  color: rgb(var(--s-100));
+}
+
+@media print {
+  body,
+  body::before {
+    background: #fff !important;
+    color: #000 !important;
+  }
+  h1, h2, h3 {
+    color: #000 !important;
+  }
+  .card {
+    background: #fff !important;
+    border-color: #ddd !important;
+    break-inside: avoid;
+    box-shadow: none;
   }
 }

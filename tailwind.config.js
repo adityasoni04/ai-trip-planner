@@ -1,83 +1,66 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
-  darkMode: ["class"],
-  content: [
-    './pages/**/*.{js,jsx}',
-    './components/**/*.{js,jsx}',
-    './app/**/*.{js,jsx}',
-    './src/**/*.{js,jsx}',
-  ],
-  prefix: "",
+// Palette is derived from the logo: teal #37C1C3, blue #3B99DB, green #34D073, amber #F5B027, coral #F24349.
+export default {
+  darkMode: "class",
+  content: ["./index.html", "./src/**/*.{js,jsx}"],
   theme: {
-    container: {
-      center: true,
-      padding: "2rem",
-      screens: {
-        "2xl": "1400px",
-      },
-    },
     extend: {
-      screens: {
-        'custom-370' : '370px',
-        'custom-435' : '435px',
-        'custom-500' : '500px',
-        'custom-600' : '600px',
+      fontFamily: {
+        sans: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
+        display: ["Sora", "Inter", "ui-sans-serif", "system-ui", "sans-serif"],
+        mono: ["JetBrains Mono", "ui-monospace", "SFMono-Regular", "monospace"],
       },
       colors: {
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
-        primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
+        // Theme-aware scales: the CSS variables in index.css flip these for light mode.
+        slate: Object.fromEntries([50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950].map((n) => [n, `rgb(var(--s-${n}) / <alpha-value>)`])),
+        teal: Object.fromEntries([50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950].map((n) => [n, `rgb(var(--t-${n}) / <alpha-value>)`])),
+        amber: { 300: "rgb(var(--amber-300) / <alpha-value>)", 400: "rgb(var(--amber-400) / <alpha-value>)" },
+        // "violet" is remapped to the logo's teal so every accent follows the brand
+        violet: {
+          50: "#ecfeff", 100: "#cffafe", 200: "#a5f3fc", 300: "#6ee7ee", 400: "#4fd3d6",
+          500: "#37c1c3", 600: "#37c1c3", 700: "#2aa3a8", 800: "#1d676b", 900: "#124a4e", 950: "#0b2a2d",
         },
-        secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
-        },
-        destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
-        },
-        muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
-        },
-        accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
-        },
-        popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
-        },
-        card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
-        },
-      },
-      borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
+        brand: { teal: "#37C1C3", blue: "#3B99DB", green: "#34D073", amber: "#F5B027", coral: "#F24349" },
       },
       keyframes: {
-        "accordion-down": {
-          from: { height: "0" },
-          to: { height: "var(--radix-accordion-content-height)" },
+        "fade-up": { from: { opacity: "0", transform: "translateY(14px)" }, to: { opacity: "1", transform: "translateY(0)" } },
+        float: { "0%,100%": { transform: "translateY(0)" }, "50%": { transform: "translateY(-12px)" } },
+        shimmer: { "100%": { transform: "translateX(100%)" } },
+        ripple: { "0%": { transform: "scale(.4)", opacity: ".7" }, "100%": { transform: "scale(2.2)", opacity: "0" } },
+        "pin-bounce": {
+          "0%,100%": { transform: "translateY(0) scaleY(1)" },
+          "45%": { transform: "translateY(-26px) scaleY(1.04)" },
+          "85%": { transform: "translateY(0) scaleY(.9)" },
         },
-        "accordion-up": {
-          from: { height: "var(--radix-accordion-content-height)" },
-          to: { height: "0" },
-        },
+        wave: { "0%,60%,100%": { transform: "translateY(0)" }, "30%": { transform: "translateY(-6px)" } },
+        sweep: { to: { transform: "rotate(360deg)" } },
+        caret: { "0%,49%": { opacity: "1" }, "50%,100%": { opacity: "0" } },
+        pan: { "0%": { backgroundPosition: "0% 50%" }, "100%": { backgroundPosition: "200% 50%" } },
+        "node-pop": { "0%,100%": { transform: "scale(.6)", opacity: ".4" }, "50%": { transform: "scale(1.15)", opacity: "1" } },
+        orbit: { to: { transform: "rotate(360deg)" } },
+        draw: { "0%": { strokeDashoffset: "400" }, "70%,100%": { strokeDashoffset: "0" } },
+        run: { from: { offsetDistance: "0%" }, to: { offsetDistance: "100%" } },
+        shake: { "0%,100%": { transform: "translateX(0)" }, "20%,60%": { transform: "translateX(-8px)" }, "40%,80%": { transform: "translateX(8px)" } },
+        indeterminate: { "0%": { transform: "translateX(-100%)" }, "100%": { transform: "translateX(300%)" } },
       },
       animation: {
-        "accordion-down": "accordion-down 0.2s ease-out",
-        "accordion-up": "accordion-up 0.2s ease-out",
+        "fade-up": "fade-up .6s ease-out both",
+        float: "float 6s ease-in-out infinite",
+        shimmer: "shimmer 1.6s infinite",
+        ripple: "ripple 1.8s ease-out infinite",
+        "pin-bounce": "pin-bounce 1.1s cubic-bezier(.3,0,.4,1) infinite",
+        wave: "wave 1.1s ease-in-out infinite",
+        sweep: "sweep 2.4s linear infinite",
+        caret: "caret 1s steps(1) infinite",
+        pan: "pan 6s linear infinite",
+        "node-pop": "node-pop 2s ease-in-out infinite",
+        orbit: "orbit 14s linear infinite",
+        draw: "draw 3.6s ease-in-out infinite",
+        run: "run 3.6s ease-in-out infinite",
+        shake: "shake .5s ease-in-out",
+        indeterminate: "indeterminate 1.4s ease-in-out infinite",
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
-}
+  plugins: [],
+};
